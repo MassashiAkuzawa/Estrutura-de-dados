@@ -1,8 +1,6 @@
 import unittest
 
 
-
-
 def esta_balanceada(expressao):
     pilha = Pilha()
 
@@ -51,6 +49,9 @@ def esta_balanceada(expressao):
     Deverá ser usada como estrutura de dados apenas a pilha feita na aula anterior
     :param expressao: string com expressao a ser balanceada
     :return: boleano verdadeiro se expressao está balanceada e falso caso contrário
+    
+    A complexidade de tempo e espaço da função é O(n), pois aumentam conforme a variável
+    
     """
     pass
 
