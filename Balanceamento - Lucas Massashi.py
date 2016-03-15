@@ -4,10 +4,7 @@ import unittest
 def esta_balanceada(expressao):
     pilha = Pilha()
 
-    if pilha.vazia():
-        return True
-    else:
-        return False
+    
 
     for k in range(len(expressao)):
         if expressao[k] == '(' or expressao[k] == '{' or expressao[k] == '[':
@@ -39,6 +36,10 @@ def esta_balanceada(expressao):
                     pilha.desempilhar()
             except PilhaVaziaErro:
                 return False
+    if pilha.vazia():
+        return True
+    else:
+        return False            
 
 
 
