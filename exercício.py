@@ -2,6 +2,7 @@
 # Só podem ser usadas as estruturas Pilha e Fila implementadas em aulas anteriores.
 # Deve ter análise de tempo e espaço para função avaliação
 
+# O tempo e a memória são O(n), poisaumentam de acordo com o tamanhp da variável
 
 from aula5.fila import Fila
 from aula4.pilha import Pilha
