@@ -5,8 +5,8 @@ import unittest
 def bubble_sort(seq):
     a = len(seq) - 1
     flag = 0
-    for b in range(len(seq) - 1):
-        for c in range(len(seq) - 1):
+    for b in range(a):
+        for c in range(a):
             if seq[c] > seq[c+1]:
                 seq[c+1], seq[c] = seq[c], seq[c+1]
         if (flag):
