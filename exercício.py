@@ -31,8 +31,8 @@ def analise_lexica(expressao):
             else:
                 raise ErroLexico("Erro")
         if not len(char) > 0:
-            fila.enfileirar(i)
-        return fila
+            fila.enfileirar(char)
+    return fila
 
     """
     Executa análise lexica transformando a expressao em fila de objetos:
