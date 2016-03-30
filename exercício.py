@@ -2,11 +2,10 @@
 # Só podem ser usadas as estruturas Pilha e Fila implementadas em aulas anteriores.
 # Deve ter análise de tempo e espaço para função avaliação
 
-# O tempo e a memória são O(n), poisaumentam de acordo com o tamanhp da variável
 
 from aula5.fila import Fila
 from aula4.pilha import Pilha
-
+from collections import deque
 
 class ErroLexico(Exception):
     pass
@@ -30,7 +29,7 @@ def analise_lexica(expressao):
                 fila.enfileirar(k)
             else:
                 raise ErroLexico("Erro")
-        if not len(char) > 0:
+        if len(char) > 0:
             fila.enfileirar(char)
     return fila
 
@@ -60,7 +59,7 @@ def analise_sintatica(fila):
         df = fila.desenfileirar()
         if df in set("-+*/()[]{}"):
             if len(char) > 0:
-                if"." in char:
+                if "." in char:
                     fil.enfileirar(float(char))
                     char = ""
                 else:
@@ -87,7 +86,7 @@ def avaliar(expressao):
     :param expressao: string com expressão aritmética
     :return: valor númerico com resultado
     """
-    fila = analise_sintatica(analise_lexica())
+    fila = analise_sintatica(analise_lexica(expressao))
     pilha = Pilha()
     a, b, c = None, None, None
     d = 0
@@ -97,7 +96,7 @@ def avaliar(expressao):
             a = pilha.desempilhar()
             b = pilha.desempilhar()
             c = pilha.desempilhar()
-            if str(b) in "-+*/" and str(c) not in "([{" and str(a) not in ")]}":
+            if str(b) in "-+*/" and str(c) not in "([{" and str(a) not in "([{":
                 if b == "+":
                     d = c + a
                 elif b == "-":
@@ -106,6 +105,7 @@ def avaliar(expressao):
                     d = c * a
                 elif b == "/":
                     d = c / a
+                    
                 pilha.empilhar(d)
             else:
                 pilha.empilhar(c)
