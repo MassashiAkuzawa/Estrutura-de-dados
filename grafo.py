@@ -1,3 +1,4 @@
+import unittest
 class Arco():
     def __init__(self, origem, destino, valor):
         self.valor = valor
@@ -23,86 +24,70 @@ class Grafo():
     def vertices(self):
         return self.vertice
     def adicionar_vertice(self, vert):
-        self.vertice = self.vertice+(vert,)
+        self.vertice=self.vertice+(vert,)
     def adicionar_arco(self, arc):
-        self.arco = self.arco+(arc,)
-    def arcos(self, vert):
+        self.arco=self.arco+(arc,)
+    def arcos(self, ver):
         arco = tuple()
         for k in self.arco:
             if ver in k.vertices:
                 arco = arco + (k,)
         return arco
-    def adjacencias(self, ver):
+    def adjacencias(self,ver):
         adj = tuple()
         for k in self.arco:
             if ver in k.vertices:
                 adj = adj + (k.oposto(ver),)
         return adj
-    def caminho(self,ver1,ver2):
-        resposta=[]
-
-        if ver1 is ver2:
-            resposta.append(ver1)
-            return resposta
-        elif self.arcos(ver1)==tuple():
-            return resposta
+    def caminho(self, city1, city2):
+        cidades = []
+        if city1 == city2:
+            cidades.append(city1)
+            return cidades
+        elif self.arcos(city1) == tuple():
+            return cidades
         else:
-            vez=ver1
-            while(vez is not ver2):
-                if self.arcos(vez)==tuple():
+            rota = city1
+            while rota != city2:
+                if self.arcos(rota) == tuple():
                     break
-                for i in self.arcos(vez):
-                    if i.oposto(vez) not in resposta:
-                        resposta.append(vez)
-                        vez=i.oposto(vez)
+                for k in self.arcos(rota):
+                    if k.oposto(rota) not in cidades:
+                        cidades.append(rota)
+                        rota = k.oposto(rota)
                         break
-            resposta.append(vez)
-            return resposta
-            
-    def calcular_melhores_caminhos_partindo_de(self,cidade):
-        listaArcos = []
-        visitados = []
-        rota = {}
-
-        visitados.append(cidade)
-        rota[cidade] = (0, [cidade])
-
-        for posicao in range(len(self.arco)):
-            if cidade in self.arco[posicao].vertices:
-                listaArcos.append((self.arco[posicao].valor, self.arco[posicao]))
-
-        while listaArcos:
-            for a in listaArcos:
-                if a[1].vertices[0] in visitados and a[1].vertices[1] in visitados:
-                    listaArcos.remove(a)
-            listaArcos.sort(key=lambda arcos: arcos[0])
-            if listaArcos:
-                arco = listaArcos.pop(0)
+            cidades.append(rota)
+            return cidades
+    def calcular_melhores_caminhos_partindo_de(self, vert):
+        visit = []
+        arc = {}
+        arc[vert] = (0, [vert])
+        visit.append(vert)
+        res = []
+        for loc in range(len(self.arco)):
+            if vert in self.arco[loc].vertices:
+                res.append((self.arco[loc].valor, self.arco[loc]))
+        while res:
+            for k in res:
+                if k[1].vertices[0] in visit and k[1].vertices[1] in visit:
+                    res.remove(k)
+            res.sort(key = lambda arcos: arcos[0])
+            if res:
+                arco = res.pop(0)
             else:
-                return rota
-
-            if arco[1].vertices[0] in visitados:
-                visitados.append(arco[1].vertices[1])
-                cidade_vizinha = arco[1].vertices[0]
+                return arc
+            if arco[1].vertices[0] in visit:
+                visit.append(arco[1].vertices[1])
+                vert2 = arco[1].vertices[0]
             else:
-                visitados.append(arco[1].vertices[0])
-                cidade_vizinha = arco[1].vertices[1]
-
-            rota[visitados[-1]] = arco[0], rota[cidade_vizinha][1] + [arco[1].valor] + [visitados[-1]]
-
-            tam=len(self.arco)
-            for posicao in range(tam):
-                if visitados[-1] in self.arco[posicao].vertices and (
-                        self.arco[posicao].vertices[0] not in visitados or self.arco[posicao].vertices[
-                    1] not in visitados):
-                    listaArcos.append((rota[visitados[-1]][0] + self.arco[posicao].valor, self.arco[posicao]))
-        return rota
-
-
-
-
-import unittest
-
+                visit.append(arco[1].vertices[0])
+                vert2 = arco[1].vertices[1]
+            arc[visit[-1]] = arco[0], arc[vert2][1] + [arco[1].valor] + [visit[-1]]
+            tamanho = len(self.arco)
+            for loc in range(tamanho):
+                if visit[-1] in self.arco[loc].vertices and (self.arco[loc].vertices[0] not in visit or self.arco[loc].vertices[1] not in visit):
+                    res.append((arc[visit[-1]][0] + self.arco[loc].valor, self.arco[loc]))
+        return arc
 
 class ArcoTestes(unittest.TestCase):
     def teste_init(self):
